@@ -1,0 +1,143 @@
+.products-page {
+  padding: 30px;
+}
+
+.products-page h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.product-search {
+  display: flex;
+  gap: 8px;
+  width: min(100%, 560px);
+  margin: 0 auto 30px;
+}
+
+.product-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #b8b8b8;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.product-search button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: #166534;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.product-search button:hover {
+  background: #14532d;
+}
+
+.no-products-message {
+  margin-top: 24px;
+  text-align: center;
+  color: #555;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.products-grid .product-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #e1e7e2;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(21, 40, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.products-grid .product-card:hover {
+  transform: translateY(-4px);
+  border-color: #a9c8b0;
+  box-shadow: 0 10px 24px rgba(21, 40, 28, 0.12);
+}
+
+.products-grid .product-image {
+  width: 100%;
+  height: 220px;
+  padding: 14px;
+  background: #f3f6f3;
+  object-fit: contain;
+}
+
+.products-grid .product-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.products-grid .product-info h2 {
+  margin: 0 0 8px;
+  color: #1d2921;
+  font-size: 19px;
+}
+
+.products-grid .product-info > p {
+  margin-top: 8px;
+  color: #5c685f;
+  line-height: 1.45;
+}
+
+.products-grid .product-info h3 {
+  margin: 10px 0 2px;
+  color: #166534;
+  font-size: 21px;
+}
+
+.products-grid .product-info button {
+  width: 100%;
+  margin-top: auto;
+  padding: 11px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: black;
+  color: white;
+  font-weight: 600;
+  transition: background-color 160ms ease;
+}
+
+.products-grid .product-info button:hover {
+  background: #26382b;
+}
+
+.products-grid .product-info button.add-to-cart-feedback {
+  animation: add-to-cart-feedback 600ms ease;
+}
+
+@keyframes add-to-cart-feedback {
+  0%,
+  100% {
+    background: black;
+    transform: scale(1);
+  }
+
+  35%,
+  70% {
+    background: #16a34a;
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .products-grid .product-info button.add-to-cart-feedback {
+    animation: none;
+    background: #16a34a;
+  }
+}
