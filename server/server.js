@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 require("dotenv").config();
 const connectDB = require("./config/db");
+const admin = require("./routes/add_products");
 
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use("/admin/mohan",admin);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
