@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 const Admin = () => {
   const [formData, setFormData] = useState({
@@ -49,8 +49,9 @@ const Admin = () => {
       data.append("rating", formData.rating);
       data.append("image", image);
 
-      const response = await axios.post(
-        "http://localhost:5000/admin/mohan",
+      // Uses your deployed backend
+      const response = await api.post(
+        "/admin/mohan",
         data,
         {
           headers: {
@@ -92,7 +93,10 @@ const Admin = () => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>Admin - Add Product</h1>
+
+        <h1 style={styles.title}>
+          Admin - Add Product
+        </h1>
 
         <p style={styles.subtitle}>
           Add a new product to your e-commerce website
@@ -110,6 +114,7 @@ const Admin = () => {
             value={formData.name}
             onChange={handleChange}
             required
+            style={styles.input}
           />
 
           {/* Description */}
@@ -121,6 +126,7 @@ const Admin = () => {
             value={formData.description}
             onChange={handleChange}
             required
+            style={styles.textarea}
           />
 
           {/* Price */}
@@ -134,6 +140,7 @@ const Admin = () => {
             onChange={handleChange}
             min="0"
             required
+            style={styles.input}
           />
 
           {/* Category */}
@@ -146,6 +153,7 @@ const Admin = () => {
             value={formData.category}
             onChange={handleChange}
             required
+            style={styles.input}
           />
 
           {/* Stock */}
@@ -159,6 +167,7 @@ const Admin = () => {
             onChange={handleChange}
             min="0"
             required
+            style={styles.input}
           />
 
           {/* Rating */}
@@ -173,6 +182,7 @@ const Admin = () => {
             min="0"
             max="5"
             step="0.1"
+            style={styles.input}
           />
 
           {/* Image */}
@@ -184,9 +194,9 @@ const Admin = () => {
             accept="image/*"
             onChange={handleImageChange}
             required
+            style={styles.fileInput}
           />
 
-          {/* Selected image */}
           {image && (
             <p style={styles.fileName}>
               Selected: {image.name}
@@ -197,9 +207,14 @@ const Admin = () => {
           <button
             type="submit"
             disabled={loading}
-            style={styles.button}
+            style={{
+              ...styles.button,
+              opacity: loading ? 0.7 : 1,
+            }}
           >
-            {loading ? "Adding Product..." : "Add Product"}
+            {loading
+              ? "Adding Product..."
+              : "Add Product"}
           </button>
 
         </form>
@@ -210,6 +225,7 @@ const Admin = () => {
             {message}
           </div>
         )}
+
       </div>
     </div>
   );
@@ -245,6 +261,39 @@ const styles = {
     marginBottom: "25px",
   },
 
+  input: {
+    width: "100%",
+    padding: "11px",
+    marginTop: "7px",
+    marginBottom: "18px",
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    boxSizing: "border-box",
+  },
+
+  textarea: {
+    width: "100%",
+    minHeight: "100px",
+    padding: "11px",
+    marginTop: "7px",
+    marginBottom: "18px",
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    boxSizing: "border-box",
+    resize: "vertical",
+  },
+
+  fileInput: {
+    width: "100%",
+    marginTop: "8px",
+    marginBottom: "10px",
+  },
+
+  fileName: {
+    fontSize: "14px",
+    color: "#555",
+  },
+
   button: {
     width: "100%",
     padding: "13px",
@@ -263,12 +312,6 @@ const styles = {
     backgroundColor: "#f1f5f9",
     borderRadius: "6px",
     textAlign: "center",
-  },
-
-  fileName: {
-    fontSize: "14px",
-    color: "#555",
-    marginTop: "8px",
   },
 };
 
