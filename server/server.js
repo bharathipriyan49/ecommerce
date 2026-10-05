@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
 // Admin route
-const adminRoutes = require("./routes/add_products");
+const adminRoutes = require("./routes/add_product");
 
 // Other routes
 const productRoutes = require("./routes/productRoutes");
