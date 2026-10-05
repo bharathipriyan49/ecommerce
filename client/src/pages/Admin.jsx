@@ -51,14 +51,9 @@ const Admin = () => {
 
       // Uses your deployed backend
       const response = await api.post(
-        "/admin/mohan",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+  "/admin/mohan",
+  data
+);
 
       setMessage(
         response.data.message || "Product added successfully!"
