@@ -16,22 +16,45 @@ const Admin = () => {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    console.log(`📝 Field changed: ${name} =`, value);
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const selectedImage = e.target.files[0];
+
+    console.log("🖼️ Image selected:", selectedImage);
+
+    if (selectedImage) {
+      console.log("Image Name:", selectedImage.name);
+      console.log("Image Type:", selectedImage.type);
+      console.log("Image Size:", selectedImage.size, "bytes");
+    }
+
+    setImage(selectedImage || null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("=================================");
+    console.log("🚀 ADD PRODUCT STARTED");
+    console.log("=================================");
+
     setMessage("");
 
+    // Check form data
+    console.log("📦 Form Data:", formData);
+    console.log("🖼️ Image:", image);
+
     if (!image) {
+      console.error("❌ No product image selected");
       setMessage("Please select a product image");
       return;
     }
@@ -49,11 +72,43 @@ const Admin = () => {
       data.append("rating", formData.rating);
       data.append("image", image);
 
-      // Uses your deployed backend
+      // Check FormData
+      console.log("📤 FormData contents:");
+
+      for (let pair of data.entries()) {
+        if (pair[0] === "image") {
+          console.log(
+            "image:",
+            pair[1].name,
+            pair[1].type,
+            pair[1].size + " bytes"
+          );
+        } else {
+          console.log(`${pair[0]}:`, pair[1]);
+        }
+      }
+
+      console.log("🌐 API Request:");
+      console.log("Method: POST");
+      console.log("URL: /admin/mohan");
+
       const response = await api.post(
-  "/admin/mohan",
-  data
-);
+        "/admin/mohan",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("=================================");
+      console.log("✅ PRODUCT ADDED SUCCESSFULLY");
+      console.log("=================================");
+
+      console.log("📥 Response Status:", response.status);
+      console.log("📥 Response Data:", response.data);
+      console.log("📥 Full Response:", response);
 
       setMessage(
         response.data.message || "Product added successfully!"
@@ -71,17 +126,65 @@ const Admin = () => {
 
       setImage(null);
 
-      document.getElementById("productImage").value = "";
+      const imageInput = document.getElementById("productImage");
+
+      if (imageInput) {
+        imageInput.value = "";
+      }
+
+      console.log("🧹 Form cleared successfully");
 
     } catch (error) {
-      console.error("Add Product Error:", error);
+      console.log("=================================");
+      console.error("❌ ADD PRODUCT ERROR");
+      console.log("=================================");
 
-      setMessage(
-        error.response?.data?.message ||
-          "Failed to add product"
-      );
+      console.error("Error Object:", error);
+
+      // Axios error
+      if (error.response) {
+        console.error("❌ Server Response Error");
+        console.error("Status:", error.response.status);
+        console.error("Status Text:", error.response.statusText);
+        console.error("Response Data:", error.response.data);
+        console.error("Response Headers:", error.response.headers);
+
+        setMessage(
+          error.response.data?.message ||
+            error.response.data?.error ||
+            `Server Error: ${error.response.status}`
+        );
+      }
+
+      // Request sent but no response
+      else if (error.request) {
+        console.error("❌ No Response From Server");
+        console.error("Request:", error.request);
+
+        setMessage(
+          "Server did not respond. Check backend / API URL."
+        );
+      }
+
+      // Something else
+      else {
+        console.error("❌ Request Setup Error");
+        console.error("Message:", error.message);
+
+        setMessage(
+          error.message || "Failed to add product"
+        );
+      }
+
+      console.error("❌ Error Message:", error.message);
+      console.error("❌ Error Stack:", error.stack);
+
     } finally {
       setLoading(false);
+
+      console.log("=================================");
+      console.log("🏁 ADD PRODUCT REQUEST FINISHED");
+      console.log("=================================");
     }
   };
 
