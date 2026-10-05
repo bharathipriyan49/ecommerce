@@ -12,18 +12,26 @@ const createProduct = async (req, res) => {
       rating,
     } = req.body;
 
-    if (!name || !description || !price || !category) {
+    // Check required fields
+    if (
+      !name ||
+      !description ||
+      price === undefined ||
+      !category
+    ) {
       return res.status(400).json({
         message: "Please fill all required fields",
       });
     }
 
+    // Check image
     if (!req.file) {
       return res.status(400).json({
         message: "Product image is required",
       });
     }
 
+    // Upload image to Cloudinary
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: "ecommerce/products",
@@ -39,24 +47,31 @@ const createProduct = async (req, res) => {
         }
 
         try {
+          // Save product in MongoDB
           const product = await Product.create({
             name,
             description,
-            price,
+            price: Number(price),
             category,
-            stock: stock || 0,
-            rating: rating || 0,
+            stock:
+              stock !== undefined && stock !== ""
+                ? Number(stock)
+                : 0,
+            rating:
+              rating !== undefined && rating !== ""
+                ? Number(rating)
+                : 0,
             image: result.secure_url,
           });
 
-          res.status(201).json({
+          return res.status(201).json({
             message: "Product added successfully",
             product,
           });
         } catch (dbError) {
           console.error("Database Error:", dbError);
 
-          res.status(500).json({
+          return res.status(500).json({
             message: "Failed to save product",
             error: dbError.message,
           });
@@ -64,12 +79,13 @@ const createProduct = async (req, res) => {
       }
     );
 
+    // Send image buffer to Cloudinary
     uploadStream.end(req.file.buffer);
 
   } catch (error) {
     console.error("Create Product Error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Server error",
       error: error.message,
     });
