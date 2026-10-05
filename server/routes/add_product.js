@@ -6,8 +6,9 @@ const upload = require("../middleware/upload");
 
 const {
   createProduct,
-} = require("../controllers/productController");
+} = require("../controllers/admincontrol");
 
+// Add Product
 router.post(
   "/",
   upload.single("image"),
