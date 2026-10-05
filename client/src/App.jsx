@@ -10,6 +10,7 @@ import { CartProvider } from "./context/CartContext";
 import Checkout from "./pages/Checkout";
 import AdminOrders from "./pages/AdminOrders";
 import FeedbackFooter from "./components/FeedbackFooter";
+import Admin from "./pages/Admin";
 function App() {
   return (
     <CartProvider>
@@ -17,6 +18,7 @@ function App() {
         <Navbar />
 
         <Routes>
+          <Route path="/admin/mohan" element={<Admin />} />
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
